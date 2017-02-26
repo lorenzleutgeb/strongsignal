@@ -25,9 +25,7 @@
 
 (defn plaintext [x] (nth plaintexts (mod (atol x) (count plaintexts))))
 
-(defn ciphertext [x]
-  (let [y (atol x)]
-    (caesar (mod y 13) (plaintext y))))
+(defn ciphertext [x] (caesar (mod (atol x) 13) (plaintext x)))
 
 (def success-text "Well done! That makes sense. It seems that Julias Caesar, the roman empire had a similar epiphany.")
 
