@@ -7,6 +7,9 @@
 (defn atoi [s]
   (. Integer parseInt s))
 
+(defn atol [s]
+  (. Long parseLong s))
+
 (defn safe-add [k c]
   (if (= c \ ) c (char (+ (int \a) (mod (- (+ k (int c)) (int \a)) 26)))))
 
@@ -20,10 +23,10 @@
                   "i came i saw i conquered"
                   "i like treason but not traitors"))
 
-(defn plaintext [x] (nth plaintexts (mod (atoi x) (count plaintexts))))
+(defn plaintext [x] (nth plaintexts (mod (atol x) (count plaintexts))))
 
 (defn ciphertext [x]
-  (let [y (atoi x)]
+  (let [y (atol x)]
     (caesar (mod y 13) (plaintext y))))
 
 (def success-text "Well done! That makes sense. It seems that Julias Caesar, the roman empire had a similar epiphany.")
