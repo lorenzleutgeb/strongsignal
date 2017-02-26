@@ -19,15 +19,24 @@
 (defn caesar [k message] message
   (apply str (rotate k (seq (clojure.string/lower-case message)))))
 
-(def plaintexts '("men generally believe what they want to believe"
+(def plaintexts '("i came i saw i conquered"
+                  "men generally believe what they want to believe"
                   "i came i saw i conquered"
-                  "i like treason but not traitors"))
+                  "i like treason but not traitors"
+                  "experience is the teacher of all things"
+                  "no one is so brave that he is not disturbed by something unexpected"
+                  "cowards die many times before their actual deaths"
+                  "the valiant never taste of death but once"
+                  "Arms and laws do not flourish together"))
 
 (defn plaintext [x] (nth plaintexts (mod (atol x) (count plaintexts))))
 
 (defn ciphertext [x] (caesar (mod (atol x) 13) (plaintext x)))
 
-(def success-text "Well done! That makes sense. It seems that Julias Caesar, the roman empire had a similar epiphany.")
+(def success-text '("Well done! That makes sense. It seems that Julius Caesar, the roman empire had a similar epiphany."
+                    "Congratulations! That's one small step for man, one giant leap for mankind."
+                    "Amazing! Seems we have a kind of an expert here."
+                    "Awesome. As Julius Caesar said: “the die is cast.”")
 
 (def wrong-texts '("Doesn't match! Please try again!"
                    "Sorry, that’s incorrect. Try again!"
@@ -76,4 +85,4 @@
         recipient-id (get-in payload [:recipient :id])
         time-of-message (get-in payload [:timestamp])
         attachments (get-in payload [:message :attachments])]
-    (fb/send-message sender-id (fb/text-message "Thanks for your attachments :)"))))
+    (fb/send-message sender-id (fb/text-message "Thanks, looks nice. :)" "Thanks, i like! ))))
