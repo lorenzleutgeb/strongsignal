@@ -1,8 +1,8 @@
-(ns facebook-example.bot
+(ns strong-signal.bot
   (:gen-class)
   (:require [clojure.string :as s]
             [environ.core :refer [env]]
-            [facebook-example.facebook :as fb]))
+            [strong-signal.facebook :as fb]))
 
 (defn on-message [payload]
   (println "on-message payload:")
