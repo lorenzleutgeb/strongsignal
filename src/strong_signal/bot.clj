@@ -55,7 +55,7 @@
         message-text (get-in payload [:message :text])]
     (cond
       (s/includes? (s/lower-case message-text) (plaintext sender-id)) (fb/send-message sender-id (fb/text-message success-text))
-      :else (fb/send-message sender-id (fb/text-message (rand-wrong))))))
+      :else (fb/send-message sender-id (rand-wrong)))))
 
 (defn on-postback [payload]
   (println "on-postback payload:")
