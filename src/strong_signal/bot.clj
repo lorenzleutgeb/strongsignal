@@ -38,8 +38,13 @@
                    "Oh no, there is a problem. Try again!"
                    "Wrong answer, please try again."
                    "Sorry an error occured. Try again!"))
-                   ;"http://imgur.com/gallery/iWKad22"
-                   ;"http://www.odec.ca/projects/2014/jhav14a/error-code-18.jpeg"
+
+(def wrong-images '("http://imgur.com/gallery/iWKad22"
+                    "http://www.odec.ca/projects/2014/jhav14a/error-code-18.jpeg"))
+
+(def wrong (concat (map fb/text-message wrong-texts) (map fb/image-message wrong-images)))
+
+(def rand-wrong (rand-nth wrong))
 
 (defn on-message [payload]
   (println "on-message payload:")
@@ -50,7 +55,7 @@
         message-text (get-in payload [:message :text])]
     (cond
       (s/includes? (s/lower-case message-text) (plaintext sender-id)) (fb/send-message sender-id (fb/text-message success-text))
-      :else (fb/send-message sender-id (fb/text-message (rand-nth wrong-texts))))))
+      :else (fb/send-message sender-id (fb/text-message (rand-wrong))))))
 
 (defn on-postback [payload]
   (println "on-postback payload:")
