@@ -52,10 +52,8 @@
         postback (get-in payload [:postback :payload])
         referral (get-in payload [:postback :referral :ref])]
     (cond
-      (= postback "GET_STARTED") (fb/send-message sender-id (fb/text-message (strone! Your result is correct. As we are always in need for talents like you, make the decision to apply today. We offer a wide range of exciting roles here at ICA. Discover our very latest vacancies.))))))
-Lorenz
- "Hello, I am Commander Murphy and I work for the Intergalactic Communication Agency (ICA). We received a message from outer space and need your help to decode it. The message is: " ciphertext
-      :else (fb/send-message sender-id (fb/text-message "Sorry, I don't know how to handle that postback"))
+      (= postback "GET_STARTED") (fb/send-message sender-id (fb/text-message (str "Hello, I am Commander Murphy and I work for the Intergalactic Communication Agency (ICA). We received a message from outer space and need your help to decode it. The message is: " ciphertext)))
+      :else (fb/send-message sender-id (fb/text-message "Sorry, I don't know how to handle that postback")))))
 
 (defn on-attachments [payload]
   (println "on-attachment payload:")
