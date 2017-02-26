@@ -27,16 +27,16 @@
                   "no one is so brave that he is not disturbed by something unexpected"
                   "cowards die many times before their actual deaths"
                   "the valiant never taste of death but once"
-                  "Arms and laws do not flourish together"))
+                  "arms and laws do not flourish together"))
 
 (defn plaintext [x] (nth plaintexts (mod (atol x) (count plaintexts))))
 
 (defn ciphertext [x] (caesar (mod (atol x) 13) (plaintext x)))
 
-(def success-text '("Well done! That makes sense. It seems that Julius Caesar, the roman empire had a similar epiphany."
-                    "Congratulations! That's one small step for man, one giant leap for mankind."
-                    "Amazing! Seems we have a kind of an expert here."
-                    "Awesome. As Julius Caesar said: “the die is cast.”")
+(def success-texts '("Well done! That makes sense. It seems that Julius Caesar, the roman empire had a similar epiphany."
+                     "Congratulations! That's one small step for man, one giant leap for mankind."
+                     "Amazing! Seems we have a kind of an expert here."
+                     "Awesome. As Julius Caesar said: the die is cast."))
 
 (def wrong-texts '("Doesn't match! Please try again!"
                    "Sorry, that’s incorrect. Try again!"
@@ -63,7 +63,7 @@
         time-of-message (get-in payload [:timestamp])
         message-text (get-in payload [:message :text])]
     (cond
-      (s/includes? (s/lower-case message-text) (plaintext sender-id)) (fb/send-message sender-id (fb/text-message success-text))
+      (s/includes? (s/lower-case message-text) (plaintext sender-id)) (fb/send-message sender-id (fb/text-message (rand-nth success-texts)))
       :else (fb/send-message sender-id (rand-wrong)))))
 
 (defn on-postback [payload]
@@ -85,4 +85,4 @@
         recipient-id (get-in payload [:recipient :id])
         time-of-message (get-in payload [:timestamp])
         attachments (get-in payload [:message :attachments])]
-    (fb/send-message sender-id (fb/text-message "Thanks, looks nice. :)" "Thanks, i like! ))))
+    (fb/send-message sender-id (fb/text-message (rand-nth '("Thanks, looks nice. :)" "Thanks, i like!"))))))
