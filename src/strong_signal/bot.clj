@@ -4,7 +4,6 @@
             [environ.core :refer [env]]
             [strong-signal.facebook :as fb]))
 
-
 (defn safe-add [k c]
   (if (= c \ ) c (char (+ (int \a) (mod (- (+ k (int c)) (int \a)) 26)))))
 
@@ -14,11 +13,16 @@
 (defn caesar [k message] message
   (apply str (rotate k (seq (clojure.string/lower-case message)))))
 
-(def plaintext (clojure.string/lower-case "men generally believe what they want to believe"))
-(def k 1)
-(def ciphertext (caesar k plaintext))
+(def plaintexts '("men generally believe what they want to believe"
+                  "i came i saw i conquered"
+                  "i like treason but not traitors"))
 
-(def success-text "Well done! That makes sense. As we are always in need for talents like you, make the decision to apply today. We offer a wide range of exciting roles here at ICA. Discover our very latest vacancies.")
+(defn plaintext [x] (nth plaintexts (mod x (count plaintexts))))
+
+(defn ciphertext [x]
+  (caesar (mod x 13) (plaintext x)))
+
+(def success-text "Well done! That makes sense. It seems that Julias Caesar, the roman empire had a similar epiphany.")
 
 (def wrong-texts '("Doesn't match! Please try again!"
                    "Sorry, that’s incorrect. Try again!"
@@ -40,7 +44,7 @@
         time-of-message (get-in payload [:timestamp])
         message-text (get-in payload [:message :text])]
     (cond
-      (s/includes? (s/lower-case message-text) plaintext) (fb/send-message sender-id (fb/text-message success-text))
+      (s/includes? (s/lower-case message-text) (plaintext sender-id)) (fb/send-message sender-id (fb/text-message success-text))
       :else (fb/send-message sender-id (fb/text-message (rand-nth wrong-texts))))))
 
 (defn on-postback [payload]
@@ -52,7 +56,7 @@
         postback (get-in payload [:postback :payload])
         referral (get-in payload [:postback :referral :ref])]
     (cond
-      (= postback "GET_STARTED") (fb/send-message sender-id (fb/text-message (str "Hello, I am Commander Murphy and I work for the Intergalactic Communication Agency (ICA). We received a message from outer space and need your help to decode it. The message is: " ciphertext)))
+      (= postback "GET_STARTED") (fb/send-message sender-id (fb/text-message (str "Hello, I am Commander Murphy and I work for the Intergalactic Communication Agency (ICA). We received a message from outer space and need your help to decode it. The message is: " (ciphertext sender-id))))
       :else (fb/send-message sender-id (fb/text-message "Sorry, I don't know how to handle that postback")))))
 
 (defn on-attachments [payload]
