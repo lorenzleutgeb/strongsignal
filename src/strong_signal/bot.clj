@@ -44,7 +44,7 @@
 
 (def wrong (concat (map fb/text-message wrong-texts) (map fb/image-message wrong-images)))
 
-(defn rand-wrong (rand-nth wrong))
+(defn rand-wrong [] (rand-nth wrong))
 
 (defn on-message [payload]
   (println "on-message payload:")
